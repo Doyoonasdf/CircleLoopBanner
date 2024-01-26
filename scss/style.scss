@@ -1,1 +1,145 @@
 @import 'reset';
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+//재활용 할거여서 변수할당
+
+$size: 400px; //넓이 및 높이값 적용
+$gap: 20px;
+$deg: 50deg; //박스가 좌우로 배치되면서 회전
+
+figure {
+	width: 100%; //풀스크린
+	height: 100vh;
+	position: relative;
+	overflow: hidden;
+	background-color: #efefef;
+	.banner {
+		width: $size;
+		height: $size;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+
+		//translate를 쓰는거보다 넓이값이 고정이니깐 calc를 이용하는게 나음  / 2 를하면 세로정중앙인데, 살짝아래로 배치할거니깐 2.5로
+		margin-top: calc(-1 * $size / 2.5);
+		margin-left: calc(-1 * $size / 2);
+		transition: 0.5s;
+
+		ul {
+			width: 100%; //크기 그대로 상속받을거니깐
+			height: 100%;
+			position: relative;
+			li {
+				//똑같은 크기로 겹쳐놓을거여서
+				position: absolute;
+				top: 0;
+				left: 0;
+
+				width: 100%;
+				height: 100%;
+				opacity: 0.7;
+				background-repeat: no-repeat;
+				background-size: cover;
+				//li는 배경이미지를 자식인 비포 에프터에게 전달만 하는 역할이고 li안쪽의 비포와 에프터가 출력 즉, li 이미지가 보이면 안되므로
+				background-position: 9999px;
+				transition: 1s;
+
+				h2 {
+					font: normal 24px/1 'anton';
+					color: #ccc;
+					position: absolute;
+					top: 120%;
+					left: 50%;
+					transform: translateX(-50%);
+					letter-spacing: 2px;
+					transition: 1.5s; //비활성화되어있는상태에선 동그라미섬네일아래쪽에 위치해있다가 활성화되면은 확대가되면서 위로 올라가게
+				}
+				.inner {
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					top: 0;
+					left: 0;
+					background-image: inherit;
+					background-repeat: inherit;
+					background-size: inherit;
+					background-position: inherit;
+
+					&::before,
+					&::after {
+						content: '';
+						position: absolute;
+						width: 100%;
+						height: 100%;
+						top: 0;
+						left: 0; //비포,에프터 겹쳐있는데 비포는 지금 아래쪽에 깔려있음 => 비포에서는 그림자처리를 할거임
+						background-image: inherit;
+						background-repeat: inherit;
+						background-size: inherit;
+						background-position: center; //여기서 보일거니깐
+						border-radius: 50%;
+						transition: 1.5s; //빙글빙글 돌게할거여서
+					}
+					&::before {
+						//그림자처리
+						top: 10%;
+						left: 2%;
+						filter: blur(20px);
+						opacity: 0.7;
+					}
+				}
+
+				a {
+					position: absolute;
+					width: 40px;
+					height: 40px;
+					bottom: 0%; //비활성화일땐 이너안쪽에 가려져있게
+					//가운데배치
+					left: 50%;
+					transform: translateX(-50%);
+
+					border-radius: 20px;
+
+					// opacity: 0; //비활성화일땐 보이면 안됨
+
+					transition: opacity 1s, bottom 1s, width 0.5s 1s; //가운데(네번째패널)가 활성화되면  a태그가 보이게 모션처리 넓이값은 가로로길어지게할거여서 0.5초동안 딜레이값은 1초로
+				}
+
+				&::before,			// a태그의 자식인 비포는 그림자처리
+				span {
+					content: ''; //before가 있으니깐
+					width: 100%;
+					height: 100%;
+
+					//겹쳐놓을거여서
+					position: absolute;
+					top: 0;
+					left: 0;
+
+					//글자가 가운데로 오게
+					display: flex;
+					justify-content: center;
+					align-items: center;
+
+					font: 11px/1 'arial';
+					color: #fff;
+					border-radius: 20px;
+
+					//기존에 그라데이션 걸어놓은거를 백그라운드 이미지로 받을수있음
+					background-image: inherit;
+				}
+
+				span {
+					opacity: 0; //비활성화일때 글자 안보이게
+					text-indent: -40px; //활성화됐을때 왼쪽에서 오른쪽으로 슥
+					transition: 0.5s 1.4s; //버튼이 내려온다음에 글자가 가로로 움지깅는 모션을 할거여서 1.4s 딜레이
+				}
+				&::before {
+					transform: translateY(30%); //그림자처럼 해야하니깐 밑으로
+					filter: blur(10px) saturate(2);
+					opacity: 0.8;
+				}
+			}
+		}
+	}
+}
